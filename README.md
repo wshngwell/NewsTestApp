@@ -1,0 +1,1 @@
+## Для сборки проекта необходимо добавить в файл gradle.properties ваш API_KEY в формате:apikey=YOUR_API_KEY
