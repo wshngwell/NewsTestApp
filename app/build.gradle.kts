@@ -20,9 +20,14 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-        val key = property("apikey")?.toString()?: error("You " +
-                "should add your apiKey to gradle.properties")
-        buildConfigField("String","API_KEY", "\"$key\"")
+        try{
+            val key = property("apikey")?.toString()
+            buildConfigField("String","API_KEY", "\"$key\"")
+        }catch (e :Exception){
+            error("You " +
+                    "should add your apiKey to gradle.properties")
+        }
+
     }
 
     buildTypes {
