@@ -20,6 +20,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val key = property("apikey")?.toString()?: error("You " +
+                "should add your apiKey to gradle.properties")
+        buildConfigField("String","API_KEY", "\"$key\"")
     }
 
     buildTypes {
@@ -40,6 +43,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"

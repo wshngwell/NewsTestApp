@@ -8,5 +8,4 @@ data class RemoveNewsFromFavouriteUseCase(
     private val newsRepository: NewsRepository
 ) {
     operator fun invoke(newsId:Int) = newsRepository.removeNewsFromFavourite(newsId)
-
 }
