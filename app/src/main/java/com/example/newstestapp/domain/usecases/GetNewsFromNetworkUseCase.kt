@@ -1,9 +1,10 @@
-package com.example.newstestapp.domain.entities.usecases
+package com.example.newstestapp.domain.usecases
 
 import com.example.newstestapp.domain.CategoriesEnum
-import com.example.newstestapp.domain.entities.repositories.NewsRepository
+import com.example.newstestapp.domain.repositories.NewsRepository
+import javax.inject.Inject
 
-data class GetNewsFromNetworkUseCase(
+data class GetNewsFromNetworkUseCase@Inject constructor(
     private val newsRepository: NewsRepository
 ) {
     operator fun invoke(categoriesEnum: CategoriesEnum) =

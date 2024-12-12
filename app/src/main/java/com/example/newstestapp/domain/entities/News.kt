@@ -1,13 +1,17 @@
 package com.example.newstestapp.domain.entities
 
 data class News(
-    val id:Int,
-    val title:String,
-    val shortDescr:String,
-    val source :String,
-    val fullText:String,
-    val author:String,
-    val dateOfPublication:String,
-    val imageUrl:String,
-    val url:String
-)
+    val id:Int = ID++,
+    val title:String? = null,
+    val shortDescr:String? = null,
+    val source :String? = null,
+    val fullText:String? = null,
+    val author:String? = null,
+    val dateOfPublication:String? = null,
+    val imageUrl:String? = null,
+    val url:String? = null,
+){
+    companion object{
+        private var ID:Int = 0
+    }
+}

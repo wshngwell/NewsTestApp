@@ -2,9 +2,9 @@ package com.example.newstestapp.data.remoteDataSource.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class Article(
+data class ArticleDto(
     @SerializedName("source")
-    val source: Source,
+    val sourceDto: SourceDto,
     @SerializedName("author")
     val author: String,
     @SerializedName("title")
