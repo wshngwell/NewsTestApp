@@ -21,8 +21,11 @@ class NavigationState(
         }
     }
 
-    fun navigateToDetailedScreen(news: News) {
-        navHostController.navigate(Screen.Detailed.getDetailedScreenWithArgs(news)) {}
+    fun navigateToDetailedFromAllNewsScreen(news: News) {
+        navHostController.navigate(Screen.DetailedFromAllNewsScreen.getDetailedScreenWithArgs(news))
+    }
+    fun navigateToDetailedFromFavouriteNewsScreen(news: News) {
+        navHostController.navigate(Screen.DetailedFavouriteNewsScreen.getDetailedScreenWithArgs(news))
     }
 }
 

@@ -5,8 +5,8 @@ import com.example.newstestapp.domain.entities.News
 import com.example.newstestapp.domain.repositories.NewsRepository
 import javax.inject.Inject
 
-data class RemoveNewsFromFavouriteUseCase@Inject constructor(
+data class RemoveNewsFromFavouriteUseCase @Inject constructor(
     private val newsRepository: NewsRepository
 ) {
-    suspend operator fun invoke(newsId:Int) = newsRepository.removeNewsFromFavourite(newsId)
+    suspend operator fun invoke(title: String) = newsRepository.removeNewsFromFavourite(title)
 }

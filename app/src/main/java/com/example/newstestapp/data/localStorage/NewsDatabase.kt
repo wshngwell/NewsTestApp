@@ -7,27 +7,28 @@ import androidx.room.RoomDatabase
 import com.example.newstestapp.data.localStorage.dbModels.NewsDbModel
 
 @Database(entities = [NewsDbModel::class], version = 1, exportSchema = false)
-abstract class NewsDatabase :RoomDatabase() {
+abstract class NewsDatabase : RoomDatabase() {
 
-    abstract fun getNewsDao():NewsDao
+    abstract fun getNewsDao(): NewsDao
 
-    companion object{
+    companion object {
         private const val DB_NAME = "NewsDb"
 
-        private var INSTANCE:NewsDatabase? = null
+        private var INSTANCE: NewsDatabase? = null
         private val LOCK = Any()
 
-        fun getInstance(context: Context):NewsDatabase{
+        fun getInstance(context: Context): NewsDatabase {
             INSTANCE?.let { return it }
 
-            synchronized(LOCK){
+            synchronized(LOCK) {
                 INSTANCE?.let { return it }
 
                 val database = Room.databaseBuilder(
                     context = context,
                     klass = NewsDatabase::class.java,
                     name = DB_NAME
-                ).build()
+                )
+                    .build()
 
                 INSTANCE = database
                 return database

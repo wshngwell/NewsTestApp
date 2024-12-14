@@ -6,8 +6,7 @@ import javax.annotation.processing.Generated
 
 @Entity(tableName = "news_table")
 data class NewsDbModel(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int=0,
+    @PrimaryKey
     val title:String,
     val shortDescr:String,
     val source :String,

@@ -10,6 +10,7 @@ interface ApiService {
     @GET("v2/top-headlines")
     suspend fun getNewsList(
         @Query("category") category: String,
+        @Query("page") page: Int,
     ):NewsResponseDto
 
 }
