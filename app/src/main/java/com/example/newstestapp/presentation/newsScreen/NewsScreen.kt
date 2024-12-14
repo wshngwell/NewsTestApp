@@ -36,11 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.newstestapp.R
 import com.example.newstestapp.domain.CategoriesEnum
 import com.example.newstestapp.domain.entities.News
 import com.example.newstestapp.presentation.getApplicationComponent
@@ -87,7 +89,9 @@ fun NewsScreen(
             mutableStateOf(tabRow)
         }
 
-        val titles = listOf("Business", "Health", "Sports")
+        val titles = listOf(stringResource(R.string.business),
+            stringResource(R.string.health), stringResource(R.string.sports)
+        )
         PrimaryTabRow(
             selectedTabIndex = tabRowState,
             containerColor = MaterialTheme.colorScheme.secondaryContainer
@@ -137,7 +141,7 @@ fun NewsScreenHandlingStates(
         is NewsScreenState.Error -> {
             Toast.makeText(
                 LocalContext.current.applicationContext,
-                "Ошибка ", Toast.LENGTH_SHORT).show()
+                stringResource(R.string.error), Toast.LENGTH_SHORT).show()
         }
 
         NewsScreenState.Initial -> {

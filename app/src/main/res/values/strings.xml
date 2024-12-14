@@ -2,4 +2,8 @@
     <string name="app_name">NewsTestApp</string>
     <string name="news"> Новости</string>
     <string name="bookmarks"> Избранное</string>
+    <string name="error">"Ошибка "</string>
+    <string name="business">Business</string>
+    <string name="health">Health</string>
+    <string name="sports">Sports</string>
 </resources>
