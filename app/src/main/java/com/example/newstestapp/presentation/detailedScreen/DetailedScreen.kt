@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -75,7 +76,10 @@ fun DetailedScreen(
                     }
 
 
-                }
+                },
+                colors = androidx.compose.material3.TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.secondaryContainer)
+
+
             )
         }
     ) {
@@ -95,13 +99,13 @@ fun DetailedScreen(
             Spacer(modifier = Modifier.height(10.dp))
             Log.d("DetailedScreen", "${news.imageUrl}")
 
-        SubcomposeAsyncImage(
-            model = news.imageUrl,
-            loading = {
-                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
-            },
-            contentDescription = null,
-        )
+            SubcomposeAsyncImage(
+                model = news.imageUrl,
+                loading = {
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+                },
+                contentDescription = null,
+            )
 
             Spacer(modifier = Modifier.height(10.dp))
 
