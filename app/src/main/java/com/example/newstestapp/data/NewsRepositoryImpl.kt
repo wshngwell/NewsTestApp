@@ -49,88 +49,97 @@ class NewsRepositoryImpl @Inject constructor(
     private var healthCurrentPage = 1
     private var sportCurrentPage = 1
 
-    private val businessNewsFlow = flow {
-        reactOnEventInLoadBusinessNewsFromNetworkFlow.emit(Unit)
+    private val businessNewsFlow by lazy {
+        flow {
+            reactOnEventInLoadBusinessNewsFromNetworkFlow.emit(Unit)
 
-        reactOnEventInLoadBusinessNewsFromNetworkFlow.collect {
-            val newsResponseDto =
-                apiService.getNewsList(CategoriesEnum.BUSINESS.category, page = businessCurrentPage)
+            reactOnEventInLoadBusinessNewsFromNetworkFlow.collect {
+                val newsResponseDto =
+                    apiService.getNewsList(
+                        CategoriesEnum.BUSINESS.category,
+                        page = businessCurrentPage
+                    )
 
-            if (newsResponseDto.totalResult == _businessNewsList.size) {
-                return@collect
+                if (newsResponseDto.totalResult == _businessNewsList.size) {
+                    return@collect
+                }
+                val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
+
+                _businessNewsList.addAll(newsListFromNet)
+                businessCurrentPage++
+                emit(NewsResult.Success(businessNewsList) as NewsResult)
             }
-            val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
-
-            _businessNewsList.addAll(newsListFromNet)
-            businessCurrentPage++
-            emit(NewsResult.Success(businessNewsList) as NewsResult)
         }
+            .retry(2) {
+                delay(DELAY_OF_RETRYING)
+                true
+            }
+            .catch { emit(NewsResult.Error) }
+            .stateIn(
+                scope = coroutineScope,
+                SharingStarted.Eagerly,
+                NewsResult.Initial as NewsResult
+            )
     }
-        .retry(2) {
+
+    private val healthNewsFlow by lazy {
+        flow {
+            reactOnEventInLoadHealthNewsFromNetworkFlow.emit(Unit)
+
+            reactOnEventInLoadHealthNewsFromNetworkFlow.collect {
+
+                val newsResponseDto =
+                    apiService.getNewsList(CategoriesEnum.HEALTH.category, page = healthCurrentPage)
+
+                if (newsResponseDto.totalResult == _healthNewsList.size) {
+                    return@collect
+                }
+                val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
+
+                _healthNewsList.addAll(newsListFromNet)
+                healthCurrentPage++
+                emit(NewsResult.Success(healthNewsList) as NewsResult)
+            }
+        }.retry(2) {
             delay(DELAY_OF_RETRYING)
             true
         }
-        .catch { emit(NewsResult.Error) }
-        .stateIn(
-            scope = coroutineScope,
-            SharingStarted.Eagerly,
-            NewsResult.Initial as NewsResult
-        )
-
-    private val healthNewsFlow = flow {
-        reactOnEventInLoadHealthNewsFromNetworkFlow.emit(Unit)
-
-        reactOnEventInLoadHealthNewsFromNetworkFlow.collect {
-
-            val newsResponseDto =
-                apiService.getNewsList(CategoriesEnum.HEALTH.category, page = healthCurrentPage)
-
-            if (newsResponseDto.totalResult == _healthNewsList.size) {
-                return@collect
-            }
-            val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
-
-            _healthNewsList.addAll(newsListFromNet)
-            healthCurrentPage++
-            emit(NewsResult.Success(healthNewsList) as NewsResult)
-        }
-    }.retry(2) {
-        delay(DELAY_OF_RETRYING)
-        true
+            .catch { (emit(NewsResult.Error as NewsResult)) }
+            .stateIn(
+                scope = coroutineScope,
+                SharingStarted.Eagerly,
+                NewsResult.Initial as NewsResult
+            )
     }
-        .catch { (emit(NewsResult.Error as NewsResult)) }
-        .stateIn(
-            scope = coroutineScope,
-            SharingStarted.Eagerly,
-            NewsResult.Initial as NewsResult
-        )
-    private val sportNewsFlow = flow {
-        reactOnEventInLoadSportNewsFromNetworkFlow.emit(Unit)
+    private val sportNewsFlow by lazy{
+        flow {
+            reactOnEventInLoadSportNewsFromNetworkFlow.emit(Unit)
 
-        reactOnEventInLoadSportNewsFromNetworkFlow.collect {
-            val newsResponseDto =
-                apiService.getNewsList(CategoriesEnum.SPORTS.category, page = sportCurrentPage)
+            reactOnEventInLoadSportNewsFromNetworkFlow.collect {
+                val newsResponseDto =
+                    apiService.getNewsList(CategoriesEnum.SPORTS.category, page = sportCurrentPage)
 
-            if (newsResponseDto.totalResult == _sportNewsList.size) {
-                return@collect
+                if (newsResponseDto.totalResult == _sportNewsList.size) {
+                    return@collect
+                }
+                val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
+
+                _sportNewsList.addAll(newsListFromNet)
+                sportCurrentPage++
+                emit(NewsResult.Success(sportNewsList) as NewsResult)
             }
-            val newsListFromNet = mapNewsResponseDtoToNews(newsResponseDto)
-
-            _sportNewsList.addAll(newsListFromNet)
-            sportCurrentPage++
-            emit(NewsResult.Success(sportNewsList) as NewsResult )
         }
+            .retry(2) {
+                delay(DELAY_OF_RETRYING)
+                true
+            }
+            .catch { emit(NewsResult.Error as NewsResult) }
+            .stateIn(
+                scope = coroutineScope,
+                SharingStarted.Eagerly,
+                NewsResult.Initial as NewsResult
+            )
     }
-        .retry(2) {
-            delay(DELAY_OF_RETRYING)
-            true
-        }
-        .catch { emit(NewsResult.Error as NewsResult) }
-        .stateIn(
-            scope = coroutineScope,
-            SharingStarted.Eagerly,
-            NewsResult.Initial as NewsResult
-        )
 
     override fun getBusinessNewsFromNetwork() = businessNewsFlow
 
